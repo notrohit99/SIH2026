@@ -6,7 +6,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("TRACENET AI System Started");
 
-    const API_BASE = "http://127.0.0.1:8002";
+    // Live Render Cloud Backend
+    const API_BASE = "https://sih2026-5ahp.onrender.com";
 
     const totalVehicles = document.getElementById("totalVehicles");
     const trackedVehicles = document.getElementById("trackedVehicles");
