@@ -328,58 +328,47 @@ document.addEventListener("DOMContentLoaded", () => {
             <i class="fa-solid fa-spinner fa-spin"></i>
             Processing...
         `;
-        setProcessingMessage("Sending video to AI pipeline...", false);
-
-        let usedDemo = false;
-        let vehicles = [];
+        setProcessingMessage("Sending video to Tracking + ANPR AI pipelines...", false);
 
         try {
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 20000); // 20s timeout
             const response = await fetch(`${API_BASE}/v1/process/video`, {
                 method: "POST",
-                body: formData,
-                signal: controller.signal
+                body: formData
             });
-            clearTimeout(timeout);
 
             const result = await response.json().catch(() => ({}));
 
             if (!response.ok) {
-                throw new Error(result.detail || `Server error (${response.status})`);
+                throw new Error(
+                    result.detail || `API request failed (${response.status})`
+                );
             }
 
-            vehicles = Array.isArray(result.vehicles) ? result.vehicles : [];
-            console.log("Backend API result:", result);
+            const vehicles = Array.isArray(result.vehicles)
+                ? result.vehicles
+                : [];
 
+            updateDashboard(vehicles);
+
+            setProcessingMessage(
+                `Processing complete — ${vehicles.length} vehicles tracked and analyzed (Camera: ${result.camera_id || cameraId}).`,
+                false
+            );
+
+            console.log("Integration API result:", result);
         } catch (error) {
-            console.warn("Backend unavailable, using demo detection data:", error.message);
-            // Client-side demo fallback — always works even if backend is down
-            usedDemo = true;
-            vehicles = [
-                { tracking_id: 1, plate_number: "DL01AB1234", vehicle: "car",        plate_confidence: 0.96 },
-                { tracking_id: 2, plate_number: "MH12DE4567", vehicle: "car",        plate_confidence: 0.91 },
-                { tracking_id: 3, plate_number: "UP32XY9999", vehicle: "truck",      plate_confidence: 0.88 },
-                { tracking_id: 4, plate_number: "KA04MN5678", vehicle: "bus",        plate_confidence: 0.94 },
-                { tracking_id: 5, plate_number: "HR26PQ3412", vehicle: "motorcycle", plate_confidence: 0.87 },
-                { tracking_id: 6, plate_number: "DL08CD5544", vehicle: "car",        plate_confidence: 0.92 },
-            ];
+            console.error("Video processing failed:", error);
+            setProcessingMessage(
+                `Processing failed: ${error.message}`,
+                true
+            );
+        } finally {
+            processVideoBtn.disabled = false;
+            processVideoBtn.innerHTML = `
+                <i class="fa-solid fa-play"></i>
+                Process Video
+            `;
         }
-
-        updateDashboard(vehicles);
-
-        setProcessingMessage(
-            usedDemo
-                ? `AI Demo Mode — ${vehicles.length} vehicles detected and analyzed (Camera: ${cameraId}).`
-                : `Processing complete — ${vehicles.length} vehicles tracked and analyzed (Camera: ${cameraId}).`,
-            false
-        );
-
-        processVideoBtn.disabled = false;
-        processVideoBtn.innerHTML = `
-            <i class="fa-solid fa-play"></i>
-            Process Video
-        `;
     }
 
     function setProcessingMessage(message, isError) {
@@ -401,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 liveVideo.src = URL.createObjectURL(file);
                 liveVideo.muted = true;
                 liveVideo.load();
-                liveVideo.play().catch(() => {});
+                liveVideo.play().catch(() => { });
             }
         });
     }
@@ -427,11 +416,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (detectionStatus) {
                 detectionStatus.textContent = integrationOk ? "ACTIVE" : "OFFLINE";
             }
-            
+
             if (trackingStatus) {
                 trackingStatus.textContent = integrationOk ? "ACTIVE" : "OFFLINE";
             }
-            
+
             if (plateStatus) {
                 plateStatus.textContent = integrationOk ? "READY" : "OFFLINE";
             }
