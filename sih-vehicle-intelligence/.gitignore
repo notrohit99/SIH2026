@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Machine learning models
+*.pt
+*.pth
+*.onnx
+*.weights
+
+# Python cache/testing
+.pytest_cache/
+.coverage
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Frontend builds
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Large Datasets & Videos
+*.h5
+*.hdf5
+*.pkl
+output/
+
+# OS
+.DS_Store
+Thumbs.db
