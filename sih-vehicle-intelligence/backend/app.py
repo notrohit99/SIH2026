@@ -1,3 +1,4 @@
+import os
 import httpx
 import json
 from pathlib import Path
@@ -6,8 +7,8 @@ from fastapi import FastAPI, HTTPException, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 
-TRAFFIC_URL = "http://127.0.0.1:8003"
-INTEGRATION_URL = "http://127.0.0.1:8002"
+TRAFFIC_URL = os.environ.get("TRAFFIC_URL", "http://127.0.0.1:8003")
+INTEGRATION_URL = os.environ.get("INTEGRATION_URL", "http://127.0.0.1:8002")
 
 
 app = FastAPI(
