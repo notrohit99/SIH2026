@@ -1,0 +1,11 @@
+{
+    "git.ignoreLimitWarning": true,
+    "python.defaultInterpreterPath": "${workspaceFolder}/sih-vehicle-intelligence/services/integration/.venv/Scripts/python.exe",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/sih-vehicle-intelligence/services/anpr",
+        "${workspaceFolder}/sih-vehicle-intelligence/services/tracking",
+        "${workspaceFolder}/sih-vehicle-intelligence/services/integration",
+        "${workspaceFolder}/sih-vehicle-intelligence/services/traffic",
+        "${workspaceFolder}/sih-vehicle-intelligence/backend"
+    ]
+}

@@ -1,0 +1,126 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "🚀 Start All Services (SIH Platform)",
+            "configurations": [
+                "1. ANPR Service (:8000)",
+                "2. Tracking Service (:8001)",
+                "3. Integration Service (:8002)",
+                "4. Traffic Service (:8003)",
+                "5. Central Backend (:8005)"
+            ],
+            "stopAll": true
+        }
+    ],
+    "configurations": [
+        {
+            "name": "1. ANPR Service (:8000)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app:app",
+                "--host", "127.0.0.1",
+                "--port", "8000"
+            ],
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/anpr",
+            "python": "${workspaceFolder}/sih-vehicle-intelligence/services/anpr/.venv/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "2. Tracking Service (:8001)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app:app",
+                "--host", "127.0.0.1",
+                "--port", "8001"
+            ],
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/tracking",
+            "python": "${workspaceFolder}/sih-vehicle-intelligence/services/tracking/.venv/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "3. Integration Service (:8002)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app:app",
+                "--host", "127.0.0.1",
+                "--port", "8002"
+            ],
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/integration",
+            "python": "${workspaceFolder}/sih-vehicle-intelligence/services/integration/.venv/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "4. Traffic Service (:8003)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app:app",
+                "--host", "127.0.0.1",
+                "--port", "8003"
+            ],
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/traffic",
+            "python": "${workspaceFolder}/traffic-test/.venv/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "5. Central Backend (:8005)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app:app",
+                "--host", "127.0.0.1",
+                "--port", "8005"
+            ],
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/backend",
+            "python": "${workspaceFolder}/sih-vehicle-intelligence/backend/.venv/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "ANPR CLI (run.py)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run.py",
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/anpr",
+            "python": "${workspaceFolder}/sih-vehicle-intelligence/services/anpr/.venv/Scripts/python.exe",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Tracking CLI (main.py)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/tracking",
+            "python": "${workspaceFolder}/sih-vehicle-intelligence/services/tracking/.venv/Scripts/python.exe",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Traffic-Test API (:8000)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "backend.api:app",
+                "--host", "127.0.0.1",
+                "--port", "8000",
+                "--reload"
+            ],
+            "cwd": "${workspaceFolder}/traffic-test",
+            "python": "${workspaceFolder}/traffic-test/.venv/Scripts/python.exe",
+            "console": "integratedTerminal"
+        }
+    ]
+}

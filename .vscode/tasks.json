@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🚀 Start All Services (Script)",
+            "type": "shell",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ${workspaceFolder}/run_all.ps1",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "🛑 Stop All Services",
+            "type": "shell",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ${workspaceFolder}/stop_all.ps1",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "1. Start ANPR Service (:8000)",
+            "type": "shell",
+            "command": "& '${workspaceFolder}/sih-vehicle-intelligence/services/anpr/.venv/Scripts/python.exe' -m uvicorn app:app --host 127.0.0.1 --port 8000",
+            "options": {
+                "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/anpr"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "2. Start Tracking Service (:8001)",
+            "type": "shell",
+            "command": "& '${workspaceFolder}/sih-vehicle-intelligence/services/tracking/.venv/Scripts/python.exe' -m uvicorn app:app --host 127.0.0.1 --port 8001",
+            "options": {
+                "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/tracking"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "3. Start Integration Service (:8002)",
+            "type": "shell",
+            "command": "& '${workspaceFolder}/sih-vehicle-intelligence/services/integration/.venv/Scripts/python.exe' -m uvicorn app:app --host 127.0.0.1 --port 8002",
+            "options": {
+                "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/integration"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "4. Start Traffic Service (:8003)",
+            "type": "shell",
+            "command": "& '${workspaceFolder}/traffic-test/.venv/Scripts/python.exe' -m uvicorn app:app --host 127.0.0.1 --port 8003",
+            "options": {
+                "cwd": "${workspaceFolder}/sih-vehicle-intelligence/services/traffic"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "5. Start Central Backend (:8005)",
+            "type": "shell",
+            "command": "& '${workspaceFolder}/sih-vehicle-intelligence/backend/.venv/Scripts/python.exe' -m uvicorn app:app --host 127.0.0.1 --port 8005",
+            "options": {
+                "cwd": "${workspaceFolder}/sih-vehicle-intelligence/backend"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "6. Start Frontend Server (:5500)",
+            "type": "shell",
+            "command": "py -3.11 -m http.server 5500 --directory '${workspaceFolder}/sih-vehicle-intelligence/frontend'",
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "🌐 Open Dashboard in Browser",
+            "type": "shell",
+            "command": "Start-Process 'http://127.0.0.1:5500'",
+            "problemMatcher": []
+        }
+    ]
+}
