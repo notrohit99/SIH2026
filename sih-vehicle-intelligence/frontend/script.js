@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Video processing failed:", error);
             setProcessingMessage(
-                `Processing failed: ${error.message}. Ensure Integration (8002), Tracking (8001), and ANPR (8000) are active.`,
+                `Processing failed: ${error.message}`,
                 true
             );
         } finally {
