@@ -6,8 +6,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("TRACENET AI System Started");
 
-    // Live Render Cloud Backend
-    const API_BASE = "https://sih2026-5ahp.onrender.com";
+    // Smart API target: Local backend when running locally, Render when on Vercel cloud
+    const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://127.0.0.1:8005"
+        : "https://sih2026-5ahp.onrender.com";
 
     const totalVehicles = document.getElementById("totalVehicles");
     const trackedVehicles = document.getElementById("trackedVehicles");
@@ -408,24 +410,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`${API_BASE}/health`);
             const health = await response.json();
 
-            const integrationOk =
-                health.status === "ok" &&
-                health.tracking_ok === true &&
-                health.anpr_ok === true;
+            const trackingOk = Boolean(health.tracking_ok || (health.integration && health.status === "ok"));
+            const anprOk = Boolean(health.anpr_ok || (health.integration && health.status === "ok"));
+            const backendOk = Boolean(health.backend || health.status === "ok");
 
             if (detectionStatus) {
-                detectionStatus.textContent = integrationOk ? "ACTIVE" : "OFFLINE";
+                detectionStatus.textContent = trackingOk ? "ACTIVE" : (backendOk ? "READY" : "OFFLINE");
             }
 
             if (trackingStatus) {
-                trackingStatus.textContent = integrationOk ? "ACTIVE" : "OFFLINE";
+                trackingStatus.textContent = trackingOk ? "ACTIVE" : (backendOk ? "READY" : "OFFLINE");
             }
 
             if (plateStatus) {
-                plateStatus.textContent = integrationOk ? "READY" : "OFFLINE";
+                plateStatus.textContent = anprOk ? "READY" : (backendOk ? "READY" : "OFFLINE");
             }
         } catch (error) {
-            console.warn("Could not reach Integration API:", error);
+            console.warn("Could not reach API:", error);
 
             if (detectionStatus) detectionStatus.textContent = "OFFLINE";
             if (trackingStatus) trackingStatus.textContent = "OFFLINE";

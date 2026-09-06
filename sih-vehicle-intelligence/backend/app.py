@@ -65,6 +65,8 @@ async def health():
 
     traffic_ok = False
     integration_ok = False
+    tracking_ok = False
+    anpr_ok = False
 
     async with httpx.AsyncClient(timeout=5) as client:
 
@@ -81,18 +83,27 @@ async def health():
                 f"{INTEGRATION_URL}/health"
             )
             integration_ok = response.status_code == 200
+            if integration_ok:
+                try:
+                    data = response.json()
+                    tracking_ok = data.get("tracking_ok", False)
+                    anpr_ok = data.get("anpr_ok", False)
+                except Exception:
+                    pass
         except Exception:
             pass
 
     return {
         "status": (
             "ok"
-            if traffic_ok and integration_ok
+            if traffic_ok and integration_ok and tracking_ok and anpr_ok
             else "degraded"
         ),
         "backend": True,
         "traffic": traffic_ok,
         "integration": integration_ok,
+        "tracking_ok": tracking_ok,
+        "anpr_ok": anpr_ok,
     }
 
 
