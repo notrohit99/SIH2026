@@ -200,4 +200,17 @@ async def process_video(
         raise HTTPException(
             status_code=502,
             detail=f"Integration service unavailable: {exc}",
-        )
+        )
+
+
+# Mount frontend static files
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+if FRONTEND_DIR.is_dir():
+    from fastapi.staticfiles import StaticFiles
+    from fastapi.responses import RedirectResponse
+
+    app.mount("/frontend", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+
+    @app.get("/")
+    async def index():
+        return RedirectResponse(url="/frontend/index.html")
